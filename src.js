@@ -163,7 +163,6 @@ javascript:(function(){
     const overlay = document.createElement('div');
     overlay.className = 'neon-overlay';
 
-    // Header with title and close button
     overlay.innerHTML = `
         <div class="neon-header">
             <h1 class="neon-title">Neon Tools</h1>
@@ -221,7 +220,6 @@ javascript:(function(){
 
     document.body.appendChild(overlay);
 
-    // Tab switching
     const tabs = overlay.querySelectorAll('.neon-tab');
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -236,12 +234,10 @@ javascript:(function(){
         });
     });
 
-    // Close button
     overlay.querySelector('.neon-close').addEventListener('click', () => {
         document.body.removeChild(overlay);
     });
 
-    // Page Viewer
     overlay.querySelector('#load-page').addEventListener('click', () => {
         const url = overlay.querySelector('#page-url').value;
         if (url) {
@@ -253,7 +249,6 @@ javascript:(function(){
         }
     });
 
-    // Clock
     function updateClock() {
         const now = new Date();
         overlay.querySelector('#current-time').textContent = now.toLocaleTimeString();
@@ -262,7 +257,6 @@ javascript:(function(){
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Notes
     const noteText = overlay.querySelector('#note-text');
     overlay.querySelector('#save-note').addEventListener('click', () => {
         localStorage.setItem('neonOverlayNote', noteText.value);
@@ -274,13 +268,11 @@ javascript:(function(){
             localStorage.removeItem('neonOverlayNote');
         }
     });
-    // Load saved note
     const savedNote = localStorage.getItem('neonOverlayNote');
     if (savedNote) {
         noteText.value = savedNote;
     }
 
-    // Bookmarks
     function loadBookmarks() {
         const bookmarksList = overlay.querySelector('#bookmarks-list');
         bookmarksList.innerHTML = '';
@@ -331,10 +323,8 @@ javascript:(function(){
         }
     });
     
-    // Load bookmarks on startup
     loadBookmarks();
 
-    // Custom Tools
     overlay.querySelector('#tool-language').addEventListener('change', (e) => {
         if (e.target.value === 'javascript') {
             overlay.querySelector('#javascript-config').style.display = 'block';
@@ -362,13 +352,11 @@ javascript:(function(){
             toolsList.appendChild(li);
         });
         
-        // Add event listeners
         overlay.querySelectorAll('.run-tool').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const index = parseInt(e.target.dataset.index);
                 const tools = JSON.parse(localStorage.getItem('neonOverlayTools') || '[]');
                 try {
-                    // Create a function from the code and execute it
                     const func = new Function(tools[index].code);
                     func();
                 } catch (err) {
@@ -405,6 +393,5 @@ javascript:(function(){
         }
     });
     
-    // Load tools on startup
     loadTools();
 })();
